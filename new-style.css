@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&display=swap');
 
 :root {
   --color-primary: #283e80;      
@@ -18,8 +19,8 @@
   --gray-800: #1F2937;
   --gray-900: #111827;
   
-  --font-heading: "DM Sans", sans-serif;
-  --font-body: "PT Serif", serif;
+ --font-heading: "Bitcount Ink", system-ui, sans-serif;
+ --font-body: "Share Tech", sans-serif;
 }
 
 /* === BASE STYLES === */
@@ -38,11 +39,11 @@ body {
 }
 
 p {
-  font-family: var(--font-body);
-  font-weight: 400;
+  font-family: "Share Tech", sans-serif; 
   line-height: 1.6;
   color: var(--gray-800);
   margin-bottom: 1rem;
+  letter-spacing: 0.5px; 
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -242,4 +243,23 @@ main.photo-grid .photo-caption {
   main.medium-style p {
     font-size: 1rem;
   }
+}
+
+body {
+  background: linear-gradient(135deg, #a8c7ff 0%, #d7b8ff 100%); 
+  background-attachment: fixed; 
+  color: var(--gray-900);
+  position: relative;
+  overflow-x: hidden;
+}
+
+img {
+  width: 90%;
+  height: auto;
+  display: block;
+  margin: 1rem auto;
+  border-radius: 20px;
+  object-fit: cover;
+  filter: blur(0.5px) brightness(1.05);
+  box-shadow: 0 0 40px 15px rgba(21, 21, 205, 0.578);
 }
