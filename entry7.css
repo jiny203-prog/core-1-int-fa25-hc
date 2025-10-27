@@ -1,0 +1,77 @@
+/* ====== 基础 & 背景（固定全屏，最稳定） ====== */
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  height: 100%;
+  overscroll-behavior: none;
+  background: #000;         /* 回弹不露白 */
+  color: #eee;
+  font-family: system-ui, sans-serif;
+}
+
+/* 覆盖你在 new-style.css 里给 body 的渐变背景 */
+body.nightmare{
+  background: transparent !important;
+}
+
+/* 用 ::before 画全屏背景图，不会被其它 background 覆盖 */
+html::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  /* 如果 entry7.css 在项目根目录，用这一行： */
+  background: url("image/nightmare.jpg") center/cover no-repeat;
+  /* 如果上面仍不出图，把上一行改成：background:url("../image/nightmare.jpg") ... */
+  filter: brightness(.95) blur(1px);
+  transform: translateZ(0); /* 提示 GPU 合成，滚动更顺滑 */
+}
+
+/* ====== 横向翻页容器 ====== */
+main.flipbook{
+  display: flex;
+  align-items: center;       /* 竖直居中卡片 */
+  height: 100svh;            /* 比 100vh 更稳 */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  /* 让页面居中吸附并留出左右边距 */
+  padding-inline: 10vw;      /* 两边留白 */
+  scroll-padding-inline: 10vw;
+  gap: 4vw;                  /* 卡片之间的“书脊缝隙” */
+
+  max-width: none !important;/* 覆盖 new-style.css 对 main 的限制 */
+}
+
+/* ====== 单页卡片 ====== */
+.page{
+  flex: 0 0 80vw;            /* 一页 = 80% 视口宽度 */
+  height: 80vh;              /* 一页 = 80% 视口高度 */
+  scroll-snap-align: center; /* 一滑就居中停住（“翻页感”） */
+
+  padding: 6vh clamp(16px,3vw,40px);
+  border-radius: 18px;
+  background: rgba(15,15,30,.40);  /* 半透明，能露出背景图 */
+  backdrop-filter: blur(3px);
+  box-shadow: 0 18px 50px rgba(0,0,0,.35);
+}
+
+/* 标题/正文样式 */
+h2{
+  margin: 0 0 1rem 0;
+  font-size: clamp(28px,4vw,42px);
+  color: #dcdcff;
+  text-shadow: 0 0 8px rgba(180,150,255,.35);
+}
+.page p{
+  margin: 0;
+  font-size: clamp(16px,1.1vw,18px);
+  line-height: 1.75;
+}
+
+/* 可选：隐藏横向滚动条 */
+main.flipbook::-webkit-scrollbar{ display:none; }

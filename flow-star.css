@@ -1,0 +1,61 @@
+.falling-stars{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: none;
+  contain: paint;
+}
+
+.falling-stars::before,
+.falling-stars::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  animation: twinkle 8s infinite ease-in-out;
+}
+
+.falling-stars::before{
+  width: 2px; height: 2px;
+  top: 0; left: 0;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow:
+    5vw 10vh #fff,
+    20vw 30vh #fff,
+    35vw 60vh #fff,
+    50vw 20vh #fff,
+    65vw 75vh #fff,
+    80vw 40vh #fff,
+    15vw 85vh #fff,
+    70vw 15vh #fff,
+    90vw 55vh #fff,
+    30vw 45vh #fff;
+  filter: drop-shadow(0 0 6px #dcb7ff);
+}
+
+.falling-stars::after{
+  width: 3px; height: 3px;
+  top: 0; left: 0;
+  background: #fff;
+  border-radius: 50%;
+  animation-delay: 4s; 
+  box-shadow:
+    12vw 25vh #fff,
+    28vw 70vh #fff,
+    48vw 38vh #fff,
+    62vw 12vh #fff,
+    77vw 52vh #fff,
+    8vw  66vh #fff,
+    42vw 82vh #fff,
+    54vw 58vh #fff,
+    88vw 22vh #fff,
+    25vw 15vh #fff;
+  filter: drop-shadow(0 0 8px #dcb7ff);
+}
+
+@keyframes twinkle{
+  0%,100%{ opacity:.35; transform: scale(.95); }
+  50%    { opacity:1;   transform: scale(1.05); }
+}
