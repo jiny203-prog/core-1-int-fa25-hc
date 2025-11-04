@@ -63,3 +63,24 @@
   0%,100%{ opacity:.35; transform: scale(.95); }
   50%    { opacity:1;   transform: scale(1.05); }
 }
+
+.cursor-star {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  background: radial-gradient(circle, #fff 30%, rgba(255,255,255,0) 70%);
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 
+    68% 57%, 79% 91%, 50% 70%, 
+    21% 91%, 32% 57%, 2% 35%, 39% 35%
+  );
+  animation: fadeStar 1s ease-out forwards;
+  z-index: 9999;
+}
+
+@keyframes fadeStar {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.2) translateY(-10px); }
+}
+

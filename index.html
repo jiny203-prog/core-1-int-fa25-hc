@@ -8,6 +8,23 @@
      <link rel="stylesheet" href="homelayout.css">
      <link rel="stylesheet" href="star.css">
      <link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&display=swap" rel="stylesheet">
+      <script>
+document.addEventListener("mousemove", (e) => {
+  const star = document.createElement("div");
+  star.classList.add("cursor-star");
+  document.body.appendChild(star);
+  star.style.left = e.pageX + "px";
+  star.style.top = e.pageY + "px";
+
+  const hue = 250 + Math.random() * 40; 
+  star.style.filter = `drop-shadow(0 0 6px hsl(${hue},100%,80%))`;
+  star.style.transform = `rotate(${Math.random() * 180}deg) scale(${0.6 + Math.random() * 0.8})`;
+
+  setTimeout(() => {
+    star.remove();
+  }, 1000); 
+});
+</script>
 
    </head>
    <body>
@@ -62,5 +79,9 @@
        <li><a href="entries/entry-6.html">The Night Mind</a></li>
        <li><a href="entries/entry-7.html">Nightmare Loop</a></li>
     </ul>
+
+    <footer>
+      <a href="p5js">The p5js experiment</a>
+    </footer>
    </body>
  </html>
