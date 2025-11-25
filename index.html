@@ -7,22 +7,24 @@
      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
      <link rel="stylesheet" href="homelayout.css">
      <link rel="stylesheet" href="star.css">
+     <link rel="icon" type="image/png" sizes="32x32" href="../favicon_io (1) 2/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon_io (1) 2/favicon-16x16.png">
+    <link rel="icon" href="../favicon_io (1) 2/favicon.ico" type="image/x-icon">
      <link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&display=swap" rel="stylesheet">
-      <script>
-document.addEventListener("mousemove", (e) => {
+  
+<script>
+document.addEventListener("mousemove", function(e) {
   const star = document.createElement("div");
   star.classList.add("cursor-star");
-  document.body.appendChild(star);
+
   star.style.left = e.pageX + "px";
   star.style.top = e.pageY + "px";
 
-  const hue = 250 + Math.random() * 40; 
-  star.style.filter = `drop-shadow(0 0 6px hsl(${hue},100%,80%))`;
-  star.style.transform = `rotate(${Math.random() * 180}deg) scale(${0.6 + Math.random() * 0.8})`;
+  document.body.appendChild(star);
 
   setTimeout(() => {
     star.remove();
-  }, 1000); 
+  }, 1000); // fadeStar 动画为 1s
 });
 </script>
 
@@ -124,7 +126,6 @@ document.addEventListener("mousemove", (e) => {
     </ul>
 
     <footer>
-      <a href="p5js/index.html">The p5js experiment</a>
     </footer>
    </body>
  </html>
