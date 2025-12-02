@@ -5,33 +5,168 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../new-style.css">
   <link rel="stylesheet" href="../morning.css">
-      <link rel="icon" type="image/png" sizes="32x32" href="../favicon_io (1) 2/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../favicon_io (1) 2/favicon-16x16.png">
-    <link rel="icon" href="../favicon_io (1) 2/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon_io (1) 2/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon_io (1) 2/favicon-16x16.png">
+  <link rel="icon" href="../favicon_io (1) 2/favicon.ico" type="image/x-icon">
   <title>False Morning</title>
+
+  <!-- p5.js 库 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+
+
+  <script>
+  
+
+    let charset = "aacbabcbabca";   // 字符来源
+    let fontSize = 18;
+    let letterSpacing = 20;          // 字间距（横向）
+    let lineSpacing = 24;            // 行距（纵向）
+
+    let explodeRadius = 100;         // 爆炸影响范围
+    let minSpeed = 3;                // 最近的最小速度
+    let maxSpeed = 10;               // 最近的最大速度
+    let springStrength = 0.04;       // 回归“弹簧”强度
+    let damping = 0.90;              // 阻力（越小飞得更远）
+
+    let glyphs = [];
+    let palette = [];
+
+    function setup() {
+      createCanvas(window.innerWidth, window.innerHeight);
+      pixelDensity(1);
+      textFont("monospace");
+      textSize(fontSize);
+      textAlign(LEFT, TOP);
+      noStroke();
+
+      // 四种可选颜色
+      palette = [
+  color(175, 200, 255),   // Mist Blue
+  color(205, 183, 246),   // Pale Violet
+  color(221, 225, 232),   // Dawn Grey
+  color(242, 220, 239)    // Cloud Pink
+
+      ];
+
+      initGlyphs();
+    }
+
+    function windowResized() {
+      resizeCanvas(window.innerWidth, window.innerHeight);
+      initGlyphs();
+    }
+
+    // 初始化整屏文字
+    function initGlyphs() {
+      glyphs = [];
+      let margin = 30;
+
+      for (let y = margin; y < height - margin; y += lineSpacing) {
+        let x = margin;
+        while (x < width - margin) {
+          let ch = charset[int(random(charset.length))];
+          let col = random(palette);
+
+          glyphs.push({
+            baseX: x,
+            baseY: y,
+            x: x,
+            y: y,
+            vx: 0,
+            vy: 0,
+            angle: 0,
+            angleV: 0,
+            col: col
+          });
+
+          x += letterSpacing;
+        }
+      }
+    }
+
+    function draw() {
+      background(230, 238, 255);  
+
+      for (let g of glyphs) {
+        // ------ “回归力”：往 base 位置拉 ------
+        let dx = g.baseX - g.x;
+        let dy = g.baseY - g.y;
+
+        // 简单弹簧模型：加速度 ~ 位移
+        g.vx += dx * springStrength;
+        g.vy += dy * springStrength;
+
+        // 阻力
+        g.vx *= damping;
+        g.vy *= damping;
+        g.angleV *= damping;
+
+        // 更新位置 & 旋转
+        g.x += g.vx;
+        g.y += g.vy;
+        g.angle += g.angleV;
+
+        // ------ 绘制 ------
+        push();
+        translate(g.x, g.y);
+        rotate(radians(g.angle));
+        fill(g.col);
+        text(g.char || "a", 0, 0);
+        pop();
+      }
+    }
+
+    function mousePressed() {
+      // 点击时，让范围内的字爆开
+      for (let g of glyphs) {
+        let d = dist(mouseX, mouseY, g.x, g.y);
+        if (d < explodeRadius) {
+          // 强度从中心向外递减
+          let strength = 1 - d / explodeRadius;   // 0~1
+          strength = max(strength, 0);
+
+          // 随机方向
+          let ang = random(TWO_PI);
+
+          // 速度随强度缩放
+          let speed = random(minSpeed, maxSpeed) * strength;
+
+          g.vx += cos(ang) * speed;
+          g.vy += sin(ang) * speed;
+
+          // 随机旋转速度，也随强度变化
+          g.angleV = random(-8, 8) * strength;
+
+          // 爆炸后随机换一个颜色
+          g.col = random(palette);
+        }
+      }
+    }
+  </script>
 </head>
 
 <body>
-     <div class="false-morning-bg" aria-hidden="true"></div>
-<main>
-  <article>
-    <h1>False Morning</h1>
+  <main class="morning-page">
+    <article class="morning-article">
+      <h1>False Morning</h1>
 
-    <p>The alarm rings at seven, but I’ve been awake since five. I never really slept—just drifted in and out of thoughts that didn’t go anywhere. My eyes feel heavy but my mind keeps working, like a machine that forgot how to turn off.</p>
+      <p>The alarm rings at seven, but I’ve been awake since five. I never really slept—just drifted in and out of thoughts that didn’t go anywhere. My eyes feel heavy but my mind keeps working, like a machine that forgot how to turn off.</p>
 
-    <p>The sunlight is already in the room. It looks warm, but it feels fake, like a bright filter over something tired. I get up and go through the usual motions—wash my face, open the blinds, check my phone. Every step feels rehearsed. I can’t remember the last time I actually felt rested while doing this.</p>
+      <p>The sunlight is already in the room. It looks warm, but it feels fake, like a bright filter over something tired. I get up and go through the usual motions—wash my face, open the blinds, check my phone. Every step feels rehearsed. I can’t remember the last time I actually felt rested while doing this.</p>
 
-    <p>Outside, the city sounds normal. Cars pass, people walk, coffee machines start to hum. Everything moves at its usual rhythm, except me. My thoughts are still slow, half stuck in the night. It’s like I woke up in someone else’s morning.</p>
+      <p>Outside, the city sounds normal. Cars pass, people walk, coffee machines start to hum. Everything moves at its usual rhythm, except me. My thoughts are still slow, half stuck in the night. It’s like I woke up in someone else’s morning.</p>
 
-    <p>I make coffee, but it tastes wrong—too bitter, too early. I sit there and scroll, waiting for my body to realize that it’s a new day. The light hurts my eyes, but I keep staring at it anyway, trying to convince myself that being awake means I’m alive.</p>
+      <p>I make coffee, but it tastes wrong—too bitter, too early. I sit there and scroll, waiting for my body to realize that it’s a new day. The light hurts my eyes, but I keep staring at it anyway, trying to convince myself that being awake means I’m alive.</p>
 
-    <p>But it doesn’t. Not yet.</p>
+      <p>But it doesn’t. Not yet.</p>
 
-    <p>False morning feels like pretending. Pretending that I slept. Pretending that I’m ready. Pretending that the night is over when it’s really still inside me. Some days begin, but they don’t really start—and I carry the darkness quietly into the light.</p>
-  </article>
-
-
-</main>
-
+      <p>False morning feels like pretending. Pretending that I slept. Pretending that I’m ready. Pretending that the night is over when it’s really still inside me. Some days begin, but they don’t really start—and I carry the darkness quietly into the light.</p>
+    </article>
+  </main>
 </body>
+
+<footer class="entry-footer">
+  <a href="../index.html" class="back-home">Back Home</a>
+</footer>
+
 </html>

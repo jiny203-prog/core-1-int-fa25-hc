@@ -1,34 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../new-style.css">
-        <link rel="icon" type="image/png" sizes="32x32" href="../favicon_io (1) 2/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../favicon_io (1) 2/favicon-16x16.png">
-    <link rel="icon" href="../favicon_io (1) 2/favicon.ico" type="image/x-icon">
-    <title>The Physical Experience of Insomnia</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../new-style.css">
+  <link rel="stylesheet" href="../fall.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon_io (1) 2/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon_io (1) 2/favicon-16x16.png">
+  <link rel="icon" href="../favicon_io (1) 2/favicon.ico" type="image/x-icon">
+  <title>The Physical Experience of Insomnia</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 </head>
-<body>
-<main class="two-column">
-<section>
-<h1>The Physical Experience of Insomnia</h1>
-<img src="../image/5.jpg">
-<h2>Insomnia Beyond the Mind</h2>
-<p>Insomnia is not just a problem of the mind—it also leaves strong marks on the body. The longer one stays awake, the more the body begins to resist and protest.</p>
 
-<h2>Immediate Physical Sensations</h2>
-<p>One of the most immediate sensations is eye strain. After hours of wakefulness, the eyes feel heavy, dry, and sore, yet they refuse to close. The heartbeat often speeds up at night, as if the body is on alert even without any real danger. Muscles grow tense, and the stomach sometimes churns, creating a feeling of unease that makes rest even harder.</p>
-</section>
+<body class="fall-page">
+  <!-- 背景：曼德勃罗 fractal -->
+  <script>
+  /*
+   * 轻量版动态 Mandelbrot：真的会 loop 的版本
+   */
+  let zoom = 1.0;
+  let centerX = -0.5;
+  let centerY = 0.0;
 
-<section>
-<h2>The Weight of Time on the Body</h2>
-<p>Time itself seems to weigh on the body. A single hour can feel like an endless stretch of discomfort. Even lying still becomes exhausting—the pressure in the chest, the tossing and turning, the subtle aches in the back and neck all accumulate through the night.</p>
-<img src="../image/7.jpg">
-<h2>My Personal Experience</h2>
-<p>From my own experience, insomnia feels like carrying a physical burden. I remember nights when my head ached as if it were filled with fog, and my skin grew sensitive to even the smallest sounds or changes in temperature. These physical symptoms create a vicious cycle: the more uncomfortable the body feels, the more the mind stays awake, and the further away sleep drifts.</p>
-</section>
+  function setup() {
+    createCanvas(window.innerWidth, window.innerHeight);
+    pixelDensity(1);
+    frameRate(20);
+  }
 
-</main>
+  function windowResized() {
+    resizeCanvas(window.innerWidth, window.innerHeight);
+  }
+
+  function draw() {
+    const baseW = 4;
+    const w = baseW / zoom;
+    const h = (w * height) / width;
+
+    const xmin = centerX - w / 2;
+    const ymin = centerY - h / 2;
+
+    loadPixels();
+
+    const maxiterations = 40;
+
+    const xmax = xmin + w;
+    const ymax = ymin + h;
+
+    const dx = (xmax - xmin) / width;
+    const dy = (ymax - ymin) / height;
+
+    let y = ymin;
+    for (let j = 0; j < height; j++) {
+      let x = xmin;
+      for (let i = 0; i < width; i++) {
+
+        let a = x;
+        let b = y;
+        let n = 0;
+
+        while (n < maxiterations) {
+          const aa = a * a;
+          const bb = b * b;
+          if (aa + bb > 16) break;
+          const twoab = 2.0 * a * b;
+          a = aa - bb + x;
+          b = twoab + y;
+          n++;
+        }
+
+        const pix = (i + j * width) * 4;
+
+        let bright;
+        if (n === maxiterations) {
+          bright = 0;
+        } else {
+          const norm = n / maxiterations;
+          bright = map(Math.sqrt(norm), 0, 1, 0, 255);
+        }
+
+        pixels[pix + 0] = bright;
+        pixels[pix + 1] = bright;
+        pixels[pix + 2] = bright;
+        pixels[pix + 3] = 255;
+
+        x += dx;
+      }
+      y += dy;
+    }
+
+    updatePixels();
+
+    zoom *= 1.02;
+    if (zoom > 80) {
+      zoom = 1.0;
+    }
+  }
+  </script>
+ <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const elements = document.querySelectorAll("main h1, main h2, main h3, main p, main img");
+
+  elements.forEach((el, idx) => {
+    // 先把元素「预设到很上方 + 隐身」，避免一开始在底部闪一下
+    el.style.opacity = "0";
+    el.style.position = "fixed";
+    el.style.bottom = "0";
+    el.style.left = "50%";
+    el.style.transform = "translate(-50%, -140vh) rotate(0deg)";
+    el.style.transformOrigin = "center center";
+    el.style.pointerEvents = "none";
+
+    // 下一帧再真正加上动画 class，这样动画一定从上面开始
+    requestAnimationFrame(() => {
+      el.classList.add("fall-chaos");
+
+      const dx = (Math.random() * 60 - 30).toFixed(1);   // -30vw ~ +30vw
+      const rot = (Math.random() * 60 - 30).toFixed(1);  // -30deg ~ +30deg
+      el.style.setProperty("--dx", dx + "vw");
+      el.style.setProperty("--rot", rot + "deg");
+
+      const dur = 8 + Math.random() * 8;                 // 8s ~ 16s
+      el.style.setProperty("--dur", dur.toFixed(2) + "s");
+
+      el.style.animationDelay = (idx * 0.8) + "s";
+    });
+  });
+});
+</script>
+
+
+
+
+
+  <!-- 正常内容，从这里开始 -->
+  <main class="entry-page">
+
+    <!-- 顶部 hero：左边大图叠字，右边导语 -->
+    <section class="hero-layout">
+      <div class="hero-left">
+        <img src="../image/5.jpg" alt="physical insomnia" class="hero-image">
+        <h1 class="hero-title-over">The Physical Experience of Insomnia</h1>
+      </div>
+
+      <div class="hero-right">
+        <p class="entry-text">
+          Insomnia is not just a problem of the mind—it also leaves strong marks on the body.
+          The longer one stays awake, the more the body begins to resist and protest.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 1：身体感受 -->
+    <section class="entry-section">
+      <h2 class="entry-subtitle">Insomnia Beyond the Mind</h2>
+      <p class="entry-text">
+        Insomnia is not just a problem of the mind—it also leaves strong marks on the body.
+        The longer one stays awake, the more the body begins to resist and protest.
+      </p>
+
+      <h2 class="entry-subtitle">Immediate Physical Sensations</h2>
+      <p class="entry-text">
+        One of the most immediate sensations is eye strain. After hours of wakefulness,
+        the eyes feel heavy, dry, and sore, yet they refuse to close. The heartbeat often
+        speeds up at night, as if the body is on alert even without any real danger.
+        Muscles grow tense, and the stomach sometimes churns, creating a feeling of
+        unease that makes rest even harder.
+      </p>
+    </section>
+
+    <!-- Section 2：时间的重量 + 个人体验 -->
+    <section class="entry-section">
+      <h2 class="entry-subtitle">The Weight of Time on the Body</h2>
+      <p class="entry-text">
+        Time itself seems to weigh on the body. A single hour can feel like an endless
+        stretch of discomfort. Even lying still becomes exhausting—the pressure in the
+        chest, the tossing and turning, the subtle aches in the back and neck all
+        accumulate through the night.
+      </p>
+
+      <img src="../image/7.jpg" alt="time on body" class="entry-image-wide">
+
+      <h2 class="entry-subtitle">My Personal Experience</h2>
+      <p class="entry-text">
+        From my own experience, insomnia feels like carrying a physical burden. I remember
+        nights when my head ached as if it were filled with fog, and my skin grew sensitive
+        to even the smallest sounds or changes in temperature. These physical symptoms create
+        a vicious cycle: the more uncomfortable the body feels, the more the mind stays awake,
+        and the further away sleep drifts.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="entry-footer">
+    <a href="../index.html" class="back-home">Back Home</a>
+  </footer>
 </body>
 </html>

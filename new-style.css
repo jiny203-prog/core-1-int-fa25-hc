@@ -332,3 +332,94 @@ main.entry-page section {
   margin-top: 4rem;
   padding: 2rem 0;
 }
+
+/* ====== TechCrunch 风格 hero layout ====== */
+
+/* 两列布局：左宽右窄 */
+.hero-layout {
+  display: grid;
+  grid-template-columns: 2fr 1.1fr;  /* 左边更宽 */
+  gap: 2rem;
+  margin-bottom: 3rem;
+  align-items: stretch;
+}
+
+/* 左边大图卡片 */
+.hero-left {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+/* 左边大图本身 */
+.hero-image {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+  filter: blur(0.5px) brightness(1.05); /* 保持你之前的效果 */
+  box-shadow: 0 0 40px 15px rgba(21, 21, 205, 0.578);
+}
+
+/* 叠在图上的 h1 标题 */
+.hero-title-over {
+  position: absolute;
+  left: 2.5rem;
+  bottom: 2.5rem;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 3.5rem;             /* 想更大就改这个 */
+  line-height: 1.1;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(0,0,0,0.6);
+}
+
+/* 右侧：图片 + 文本 */
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* 右侧图片（可以换成别的图片） */
+.hero-side-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+  display: block;
+  filter: blur(0.5px) brightness(1.05);
+  box-shadow: 0 0 30px 10px rgba(21, 21, 205, 0.45);
+}
+
+/* 右侧文字沿用 entry-text，只是稍微调一下 */
+.hero-right .entry-text {
+  margin: 0;
+}
+
+/* 手机 / 小屏幕：改成一列 */
+@media (max-width: 900px) {
+  .hero-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-image {
+    height: 320px;
+  }
+
+  .hero-title-over {
+    font-size: 2.5rem;
+    left: 1.5rem;
+    bottom: 1.5rem;
+  }
+}
+
+canvas {
+  position: fixed;
+  inset: 0;                          /* top:0; right:0; bottom:0; left:0 的缩写 */
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: -1;                       /* 在所有内容下面 */
+  pointer-events: none;              /* 不挡住鼠标点击 */
+  display: block;
+}

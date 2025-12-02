@@ -1,0 +1,33 @@
+.fall-page {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 掉落元素 */
+.fall-chaos {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform-origin: center center;
+  pointer-events: none;
+  animation-name: fallChaos;
+  animation-duration: var(--dur, 10s);
+  animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  animation-fill-mode: forwards;
+}
+
+/* 从很上面掉到 bottom:0，最后停住 */
+@keyframes fallChaos {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -140vh) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--dx, 0vw)), 0) rotate(var(--rot, 0deg));
+  }
+}
+

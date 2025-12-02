@@ -1,0 +1,48 @@
+.light-specks {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5;                  /* 保证在内容上面，可以看到 */
+  overflow: hidden;
+}
+
+/* 两层叠加的光斑层 */
+.light-specks::before,
+.light-specks::after {
+  content: "";
+  position: absolute;
+  width: 300vw;
+  height: 300vh;
+  top: -100vh;
+  left: -100vw;
+
+  /* 偏暖一点的“日光尘埃”颜色 */
+  background: radial-gradient(
+      rgba(255, 255, 230, 0.45) 0%,
+      rgba(255, 255, 230, 0.16) 25%,
+      rgba(255, 255, 230, 0.08) 45%,
+      transparent 70%
+    )
+    repeat;
+
+  background-size: 180px 180px;   /* 斑点大小 */
+  filter: blur(10px);
+  opacity: 0.55;
+  animation: floatLight 28s linear infinite;
+  mix-blend-mode: screen;         /* 跟下面的内容“加亮”混合，比较像光 */
+}
+
+.light-specks::after {
+  animation-duration: 42s;        /* 第二层速度不一样，叠加更自然 */
+  background-size: 260px 260px;
+  opacity: 0.38;
+}
+
+@keyframes floatLight {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(220px, 320px) rotate(360deg);
+  }
+}
